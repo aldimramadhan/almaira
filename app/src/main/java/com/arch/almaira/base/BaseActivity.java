@@ -1,4 +1,4 @@
-package com.arch.almaira;
+package com.arch.almaira.base;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +6,8 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.arch.almaira.R;
 
 /**
  * Base activity providing smooth fade-in and fade-out transitions across all pages

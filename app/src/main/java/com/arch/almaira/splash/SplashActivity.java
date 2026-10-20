@@ -1,4 +1,4 @@
-package com.arch.almaira;
+package com.arch.almaira.splash;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -18,6 +18,9 @@ import android.widget.ImageView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.arch.almaira.R;
+import com.arch.almaira.onboard.OnboardActivity;
+
 /**
  * Splash screen activity matching the timing and animations from Neummio,
  * with the circle settling and opening exactly at the vertical and horizontal center.
@@ -29,9 +32,9 @@ import androidx.appcompat.app.AppCompatActivity;
  * - 3.50s to 5.50s: Central Logo Fade In (2s) at exact center
  * - 5.50s to 8.50s: Central Logo Standby (3s)
  * - 8.50s to 10.50s: Central Logo Fade Out (2s)
- * - 10.50s: Smooth fade transition (900ms) to onboard
+ * - 10.50s: Smooth fade transition (900ms) to OnboardActivity
  */
-public class splashscreen extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity {
 
     private View splashRoot;
     private View splashCircle;
@@ -197,7 +200,7 @@ public class splashscreen extends AppCompatActivity {
         }
         isTransitioned = true;
 
-        Intent intent = new Intent(splashscreen.this, onboard.class);
+        Intent intent = new Intent(SplashActivity.this, OnboardActivity.class);
         startActivity(intent);
 
         // 900ms smooth fade transition

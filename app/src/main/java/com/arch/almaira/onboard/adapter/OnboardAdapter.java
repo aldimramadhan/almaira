@@ -1,4 +1,4 @@
-package com.arch.almaira;
+package com.arch.almaira.onboard.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.arch.almaira.onboard.model.OnboardItem;
 
 import java.util.List;
 
@@ -42,7 +44,7 @@ public class OnboardAdapter extends RecyclerView.Adapter<OnboardAdapter.SlideVie
         return items != null ? items.size() : 0;
     }
 
-    static class SlideViewHolder extends RecyclerView.ViewHolder {
+    public static class SlideViewHolder extends RecyclerView.ViewHolder {
         SlideViewHolder(@NonNull View itemView) {
             super(itemView);
         }

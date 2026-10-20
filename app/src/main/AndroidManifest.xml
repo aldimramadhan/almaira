@@ -11,8 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Almaira">
+
+        <!-- Splash Screen Activity (Launcher) -->
         <activity
-            android:name=".splashscreen"
+            android:name=".splash.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.Almaira.Splash"
             android:windowSoftInputMode="adjustResize">
@@ -23,8 +25,15 @@
             </intent-filter>
         </activity>
 
+        <!-- Onboarding Activity -->
         <activity
-            android:name=".onboard"
+            android:name=".onboard.OnboardActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Sign-In Activity -->
+        <activity
+            android:name=".signin.SignInActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
     </application>

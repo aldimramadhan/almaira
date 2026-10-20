@@ -1,4 +1,4 @@
-package com.arch.almaira;
+package com.arch.almaira.onboard;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
@@ -23,19 +23,24 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.arch.almaira.R;
+import com.arch.almaira.base.BaseActivity;
+import com.arch.almaira.onboard.adapter.OnboardAdapter;
+import com.arch.almaira.onboard.model.OnboardItem;
+import com.arch.almaira.signin.SignInActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class onboard extends BaseActivity {
+public class OnboardActivity extends BaseActivity {
 
     private ViewPager2 viewPager;
     private LinearLayout dotsContainer;
     private LinearLayout bottomBar;
     private View skipContainer;
-    private View btnSkip;
+    private MaterialButton btnSkip;
     private MaterialButton btnAction;
     private final View[] dots = new View[3];
 
@@ -234,7 +239,21 @@ public class onboard extends BaseActivity {
             }
         });
 
-        btnSkip.setOnClickListener(v -> showSkipConfirmationDialog());
+        btnSkip.setOnClickListener(v -> {
+            // Tactile feedback on Skip button
+            v.animate()
+                    .scaleX(0.92f)
+                    .scaleY(0.92f)
+                    .setDuration(80)
+                    .withEndAction(() -> v.animate()
+                            .scaleX(1.0f)
+                            .scaleY(1.0f)
+                            .setDuration(180)
+                            .setInterpolator(new OvershootInterpolator(2.0f))
+                            .withEndAction(this::showSkipConfirmationDialog)
+                            .start())
+                    .start();
+        });
     }
 
     private void updateIndicators(int activePosition) {
@@ -246,9 +265,9 @@ public class onboard extends BaseActivity {
         }
 
         float density = getResources().getDisplayMetrics().density;
-        int activeWidth = Math.round(26 * density);
-        int inactiveWidth = Math.round(10 * density);
-        int height = Math.round(10 * density);
+        int activeWidth = Math.round(24 * density);
+        int inactiveWidth = Math.round(8 * density);
+        int height = Math.round(8 * density);
 
         for (int i = 0; i < dots.length; i++) {
             boolean isActive = (i == activePosition);
@@ -260,8 +279,8 @@ public class onboard extends BaseActivity {
             dot.setBackgroundResource(isActive ? R.drawable.dot_active : R.drawable.dot_inactive);
 
             if (isActive) {
-                dot.setScaleX(0.8f);
-                dot.setScaleY(0.8f);
+                dot.setScaleX(0.75f);
+                dot.setScaleY(0.75f);
                 dot.animate()
                         .scaleX(1.0f)
                         .scaleY(1.0f)
@@ -278,24 +297,25 @@ public class onboard extends BaseActivity {
         changeBounds.setDuration(340);
         changeBounds.setInterpolator(new OvershootInterpolator(1.4f));
         Fade fade = new Fade();
-        fade.setDuration(200);
+        fade.setDuration(180);
         transitionSet.addTransition(changeBounds);
         transitionSet.addTransition(fade);
         TransitionManager.beginDelayedTransition(bottomBar, transitionSet);
 
         LinearLayout.LayoutParams btnParams = (LinearLayout.LayoutParams) btnAction.getLayoutParams();
-        float density = getResources().getDisplayMetrics().density;
 
         if (position == 2) {
-            // Slide 3: Hide "Lewati" and expand "Mulai Sekarang ->" to full width with bouncy transition
+            // Slide 3: Hide "Lewati" pill and expand "Mulai Sekarang ->" with bounce
             skipContainer.setVisibility(View.GONE);
             btnParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            btnParams.weight = 0f;
             btnAction.setLayoutParams(btnParams);
             btnAction.setText(R.string.get_started_text);
         } else {
-            // Slide 1 & 2: Show "Lewati" on the left and "Lanjut ->" pill on the right
+            // Slide 1 & 2: Show "Lewati" pill and "Lanjut ->" pill with proportionate weights
             skipContainer.setVisibility(View.VISIBLE);
-            btnParams.width = Math.round(205 * density);
+            btnParams.width = 0;
+            btnParams.weight = 1.6f;
             btnAction.setLayoutParams(btnParams);
             btnAction.setText(R.string.next_text);
         }
@@ -330,14 +350,9 @@ public class onboard extends BaseActivity {
         if (isExiting) return;
         isExiting = true;
 
-        try {
-            Class<?> signinClass = Class.forName("com.arch.almaira.signin");
-            Intent intent = new Intent(onboard.this, signinClass);
-            startActivity(intent);
-            finish();
-        } catch (ClassNotFoundException ignored) {
-            isExiting = false;
-        }
+        Intent intent = new Intent(OnboardActivity.this, SignInActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
