@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingTop="16dp"
+    android:paddingBottom="12dp">
+
+    <!-- Slide 3 Memories Album & Polaroids Illustration -->
+    <ImageView
+        android:id="@+id/slide_illustration"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:contentDescription="@null"
+        android:paddingHorizontal="14dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ill_onboard_3" />
+
+    <!-- Slide 3 Title -->
+    <TextView
+        android:id="@+id/slide_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:letterSpacing="-0.01"
+        android:lineSpacingMultiplier="1.18"
+        android:paddingHorizontal="28dp"
+        android:text="Kenangan yang\nselalu dekat"
+        android:textColor="@color/text_primary"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <!-- Slide 3 Subtitle -->
+    <TextView
+        android:id="@+id/slide_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.38"
+        android:paddingHorizontal="32dp"
+        android:text="Abadikan foto, perjalanan, dan momen\nkecil yang ingin selalu kalian ingat\nbersama."
+        android:textColor="@color/text_secondary"
+        android:textSize="14.5sp" />
+
+</LinearLayout>

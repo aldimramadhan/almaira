@@ -197,22 +197,17 @@ public class splashscreen extends AppCompatActivity {
         }
         isTransitioned = true;
 
-        try {
-            Class<?> onboardClass = Class.forName("com.arch.almaira.onboard");
-            Intent intent = new Intent(splashscreen.this, onboardClass);
-            startActivity(intent);
+        Intent intent = new Intent(splashscreen.this, onboard.class);
+        startActivity(intent);
 
-            // 900ms smooth fade transition
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, R.anim.fade_in_900, R.anim.fade_out_900);
-            } else {
-                overridePendingTransition(R.anim.fade_in_900, R.anim.fade_out_900);
-            }
-
-            finish();
-        } catch (ClassNotFoundException ignored) {
-            // onboard activity not yet created in this project
+        // 900ms smooth fade transition
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, R.anim.fade_in_900, R.anim.fade_out_900);
+        } else {
+            overridePendingTransition(R.anim.fade_in_900, R.anim.fade_out_900);
         }
+
+        finish();
     }
 
     @Override

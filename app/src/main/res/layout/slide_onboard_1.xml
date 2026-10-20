@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingTop="28dp">
+
+    <!-- Wordmark Logo: almaira with heart dot on 'i' -->
+    <ImageView
+        android:id="@+id/slide_logo"
+        android:layout_width="215dp"
+        android:layout_height="68dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/splash_content_desc"
+        android:scaleType="fitCenter"
+        android:src="@drawable/img_wordmark_almaira" />
+
+    <!-- Slide 1 Title -->
+    <TextView
+        android:id="@+id/slide_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:letterSpacing="-0.01"
+        android:lineSpacingMultiplier="1.18"
+        android:paddingHorizontal="28dp"
+        android:text="Ruang kecil untuk\nkita berdua"
+        android:textColor="@color/text_primary"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <!-- Slide 1 Subtitle -->
+    <TextView
+        android:id="@+id/slide_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.38"
+        android:paddingHorizontal="32dp"
+        android:text="Simpan cerita, perasaan, dan momen\nspesial dalam satu tempat yang hangat\ndan personal."
+        android:textColor="@color/text_secondary"
+        android:textSize="14.5sp" />
+
+    <!-- Slide 1 Cozy Couple House Illustration -->
+    <ImageView
+        android:id="@+id/slide_illustration"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:contentDescription="@null"
+        android:paddingHorizontal="14dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ill_onboard_1" />
+
+</LinearLayout>
