@@ -1,0 +1,1230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    tools:context=".main.MainActivity">
+
+    <!-- Subtle Ambient Top-Right Blush Waves (matches reference background) -->
+    <ImageView
+        android:layout_width="290dp"
+        android:layout_height="240dp"
+        android:contentDescription="@null"
+        android:scaleType="fitEnd"
+        android:src="@drawable/bg_top_ambient_waves"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Scrollable Main Content -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:fillViewport="false"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@+id/card_bottom_nav"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="20dp">
+
+            <!-- 1. Top Bar: Wordmark "almaira" + Bell & Settings Circular Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="128dp"
+                    android:layout_height="38dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/splash_content_desc"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/img_wordmark_almaira" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <!-- Notification Bell Circle Button -->
+                <FrameLayout
+                    android:id="@+id/btn_notification"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_top_circle_btn"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="19dp"
+                        android:layout_height="19dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="Notifikasi"
+                        android:src="@drawable/ic_bell_outline" />
+
+                    <!-- Unread Coral Dot on Top-Right Edge -->
+                    <View
+                        android:layout_width="8.5dp"
+                        android:layout_height="8.5dp"
+                        android:layout_gravity="top|end"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginEnd="3dp"
+                        android:background="@drawable/bg_pulse_dot" />
+                </FrameLayout>
+
+                <!-- Settings Gear Circle Button -->
+                <FrameLayout
+                    android:id="@+id/btn_settings"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_top_circle_btn"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="19dp"
+                        android:layout_height="19dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="Pengaturan"
+                        android:src="@drawable/ic_settings_outline" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <!-- 2. Greeting Section: "Hai, Aldi & Ira ♡" -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_greeting_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="-0.01"
+                    android:text="Hai, Aldi &amp; Ira"
+                    android:textColor="#FF2B1D1D"
+                    android:textSize="21sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="1dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_heart_outline" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:lineSpacingMultiplier="1.2"
+                android:text="Semoga hari ini penuh cinta dan hal-hal baik, selalu."
+                android:textColor="#FF786564"
+                android:textSize="13sp" />
+
+            <!-- 3. Hero Banner Card: "Hari ke-468 bersama ♡" + Couple Sunset Illustration -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_hero_space"
+                android:layout_width="match_parent"
+                android:layout_height="136dp"
+                android:layout_marginTop="14dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:outlineAmbientShadowColor="#12463032"
+                android:outlineSpotShadowColor="#1E463032"
+                app:cardBackgroundColor="#FFFBF3F0"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="2dp"
+                app:rippleColor="#18D45863"
+                app:strokeColor="#FFF3E6E2"
+                app:strokeWidth="1dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <!-- Right-side Couple Sunset Artwork -->
+                    <ImageView
+                        android:layout_width="246dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end|center_vertical"
+                        android:contentDescription="@null"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/img_hero_couple_sunset" />
+
+                    <!-- Left-side Days Counter & Message -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:letterSpacing="-0.01"
+                            android:text="Hari ke"
+                            android:textColor="#FF2B1D1D"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_days_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:letterSpacing="-0.02"
+                            android:text="468"
+                            android:textColor="#FFD45863"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-2dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:includeFontPadding="false"
+                                android:letterSpacing="-0.01"
+                                android:text="bersama"
+                                android:textColor="#FF2B1D1D"
+                                android:textSize="14.5sp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="1dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_heart_outline" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:lineSpacingMultiplier="1.18"
+                            android:text="Semoga hari ini selalu hangat untuk kita berdua."
+                            android:textColor="#FF786564"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 4. Shared Love Notes Card: "Catatan Kita" -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_shared_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:outlineAmbientShadowColor="#12463032"
+                android:outlineSpotShadowColor="#1A463032"
+                app:cardBackgroundColor="@color/surface"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="2dp"
+                app:rippleColor="#15D45863"
+                app:strokeColor="#FFF3E8E5"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="13dp">
+
+                    <!-- Header Row: Icon + Catatan Kita + Chevron -->
+                    <LinearLayout
+                        android:id="@+id/header_notes_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_bookmark_heart" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:letterSpacing="-0.01"
+                            android:text="Catatan Kita"
+                            android:textColor="#FF2B1D1D"
+                            android:textSize="13.5sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="13dp"
+                            android:layout_height="13dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_chevron_right" />
+                    </LinearLayout>
+
+                    <!-- Dual Sticky Notes: Dari Aldi & Dari Ira -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="11dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <!-- Sticky Note 1: Dari Aldi -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_note_kamu"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4.5dp"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardBackgroundColor="#FFFDF5F3"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="0dp"
+                            app:strokeColor="#FFEFE0DB"
+                            app:strokeWidth="1dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="10dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="22dp"
+                                        android:layout_height="22dp"
+                                        android:contentDescription="@null"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/img_mood_kamu" />
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="6dp"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/tv_note_kamu_author"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:includeFontPadding="false"
+                                            android:text="Dari Aldi"
+                                            android:textColor="#FF2B1D1D"
+                                            android:textSize="11sp"
+                                            android:textStyle="bold" />
+
+                                        <TextView
+                                            android:id="@+id/tv_note_kamu_time"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="1.5dp"
+                                            android:includeFontPadding="false"
+                                            android:text="Hari ini, 15:51"
+                                            android:textColor="#FF9A8482"
+                                            android:textSize="8.8sp" />
+                                    </LinearLayout>
+
+                                    <ImageView
+                                        android:id="@+id/iv_note_kamu_action"
+                                        android:layout_width="12dp"
+                                        android:layout_height="12dp"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/ic_edit_pencil"
+                                        app:tint="#FFC95B63" />
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/tv_note_kamu_content"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:ellipsize="end"
+                                    android:lineSpacingMultiplier="1.18"
+                                    android:maxLines="3"
+                                    android:minLines="2"
+                                    android:text="✨ Bangga selalu sama kamu, terima kasih untuk hari ini ya ♡"
+                                    android:textColor="#FF5A4645"
+                                    android:textSize="10.5sp" />
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <!-- Sticky Note 2: Dari Ira -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_note_pasangan"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4.5dp"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardBackgroundColor="#FFFFF8EE"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="0dp"
+                            app:strokeColor="#FFF0E5D4"
+                            app:strokeWidth="1dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="10dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="22dp"
+                                        android:layout_height="22dp"
+                                        android:contentDescription="@null"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/img_mood_pasangan" />
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="6dp"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/tv_note_pasangan_author"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:includeFontPadding="false"
+                                            android:text="Dari Ira"
+                                            android:textColor="#FF2B1D1D"
+                                            android:textSize="11sp"
+                                            android:textStyle="bold" />
+
+                                        <TextView
+                                            android:id="@+id/tv_note_pasangan_time"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="1.5dp"
+                                            android:includeFontPadding="false"
+                                            android:text="Hari ini, 08:15"
+                                            android:textColor="#FF9A897A"
+                                            android:textSize="8.8sp" />
+                                    </LinearLayout>
+
+                                    <ImageView
+                                        android:id="@+id/iv_note_pasangan_action"
+                                        android:layout_width="12dp"
+                                        android:layout_height="12dp"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/ic_signin_lock"
+                                        app:tint="#FF9E6D38" />
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/tv_note_pasangan_content"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:ellipsize="end"
+                                    android:lineSpacingMultiplier="1.18"
+                                    android:maxLines="3"
+                                    android:minLines="2"
+                                    android:text="Jangan lupa minum air yang banyak dan kabari aku ya ♡"
+                                    android:textColor="#FF5E4B3E"
+                                    android:textSize="10.5sp" />
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 5. Middle Bento Row: "Mood Kita" (Left) & "Wishlist Kita" (Right) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="172dp"
+                android:layout_marginTop="12dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <!-- Left Bento Card: Mood Kita -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_bento_mood"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:outlineAmbientShadowColor="#12463032"
+                    android:outlineSpotShadowColor="#1A463032"
+                    app:cardBackgroundColor="@color/surface"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="#FFF3E8E5"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="11dp">
+
+                        <!-- Card Header -->
+                        <LinearLayout
+                            android:id="@+id/header_mood_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/img_heart_3d" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:layout_weight="1"
+                                android:text="Mood Kita"
+                                android:textColor="#FF2B1D1D"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="13dp"
+                                android:layout_height="13dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_chevron_right" />
+                        </LinearLayout>
+
+                        <!-- Two Sub-Cards: Kamu & Pasanganmu (Centered vertically in card) -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="1"
+                            android:baselineAligned="false"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <!-- Sub-Card 1: Kamu -->
+                            <LinearLayout
+                                android:id="@+id/card_mood_kamu"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="3dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_mood_subcard"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:paddingHorizontal="4dp"
+                                android:paddingVertical="6dp">
+
+                                <ImageView
+                                    android:layout_width="54dp"
+                                    android:layout_height="44dp"
+                                    android:contentDescription="@null"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/img_mood_kamu" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="Kamu"
+                                    android:textColor="#FF2B1D1D"
+                                    android:textSize="10.5sp"
+                                    android:textStyle="bold" />
+
+                                <!-- Mood Dropdown Pill -->
+                                <LinearLayout
+                                    android:id="@+id/pill_mood_kamu"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="22dp"
+                                    android:layout_marginTop="4dp"
+                                    android:background="@drawable/bg_pill_bahagia"
+                                    android:gravity="center"
+                                    android:orientation="horizontal"
+                                    android:paddingHorizontal="4dp">
+
+                                    <TextView
+                                        android:id="@+id/tv_mood_kamu"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:includeFontPadding="false"
+                                        android:maxLines="1"
+                                        android:text="Kangen"
+                                        android:textColor="#FFC95B63"
+                                        android:textSize="9sp"
+                                        android:textStyle="bold" />
+
+                                    <ImageView
+                                        android:layout_width="9dp"
+                                        android:layout_height="9dp"
+                                        android:layout_marginStart="3dp"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/ic_chevron_down" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <!-- Sub-Card 2: Pasanganmu -->
+                            <LinearLayout
+                                android:id="@+id/card_mood_pasangan"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="3dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_mood_subcard"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:paddingHorizontal="4dp"
+                                android:paddingVertical="6dp">
+
+                                <ImageView
+                                    android:layout_width="54dp"
+                                    android:layout_height="44dp"
+                                    android:contentDescription="@null"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/img_mood_pasangan" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="Pasanganmu"
+                                    android:textColor="#FF2B1D1D"
+                                    android:textSize="10.5sp"
+                                    android:textStyle="bold" />
+
+                                <!-- Mood Dropdown Pill -->
+                                <LinearLayout
+                                    android:id="@+id/pill_mood_pasangan"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="22dp"
+                                    android:layout_marginTop="4dp"
+                                    android:background="@drawable/bg_pill_semangat"
+                                    android:gravity="center"
+                                    android:orientation="horizontal"
+                                    android:paddingHorizontal="4dp">
+
+                                    <TextView
+                                        android:id="@+id/tv_mood_pasangan"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:includeFontPadding="false"
+                                        android:maxLines="1"
+                                        android:text="Semangat"
+                                        android:textColor="#FF5E432B"
+                                        android:textSize="9sp"
+                                        android:textStyle="bold" />
+
+                                    <ImageView
+                                        android:layout_width="9dp"
+                                        android:layout_height="9dp"
+                                        android:layout_marginStart="3dp"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/ic_chevron_down"
+                                        app:tint="#FF8B6543" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Right Bento Card: Wishlist Kita -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_bento_wishlist"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:outlineAmbientShadowColor="#12463032"
+                    android:outlineSpotShadowColor="#1A463032"
+                    app:cardBackgroundColor="@color/surface"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="#FFF3E8E5"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="11dp">
+
+                        <!-- Card Header -->
+                        <LinearLayout
+                            android:id="@+id/header_wishlist_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_wishlist_bag_pink" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:layout_weight="1"
+                                android:text="Wishlist Kita"
+                                android:textColor="#FF2B1D1D"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="13dp"
+                                android:layout_height="13dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_chevron_right" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="8dp"
+                            android:background="#FFF5EAE6" />
+
+                        <!-- Wishlist Item 1: Umrah ke Makkah & Madinah -->
+                        <LinearLayout
+                            android:id="@+id/item_wish_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/cb_wish_1"
+                                android:layout_width="17dp"
+                                android:layout_height="17dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_checkbox_checked" />
+
+                            <TextView
+                                android:id="@+id/tv_wish_1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:layout_weight="1"
+                                android:lineSpacingMultiplier="1.1"
+                                android:text="Umrah ke Makkah &amp;\nMadinah"
+                                android:textColor="#FF2B1D1D"
+                                android:textSize="9.5sp" />
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_marginStart="4dp"
+                                android:contentDescription="@null"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/img_wish_kaaba" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#FFF5EAE6" />
+
+                        <!-- Wishlist Item 2: Jalan-jalan berdua -->
+                        <LinearLayout
+                            android:id="@+id/item_wish_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/cb_wish_2"
+                                android:layout_width="17dp"
+                                android:layout_height="17dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_checkbox_unchecked" />
+
+                            <TextView
+                                android:id="@+id/tv_wish_2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:layout_weight="1"
+                                android:text="Jalan-jalan berdua"
+                                android:textColor="#FF4F3B3A"
+                                android:textSize="9.5sp" />
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_marginStart="4dp"
+                                android:contentDescription="@null"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/img_wish_plane" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#FFF5EAE6" />
+
+                        <!-- Wishlist Item 3: Jajan -->
+                        <LinearLayout
+                            android:id="@+id/item_wish_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/cb_wish_3"
+                                android:layout_width="17dp"
+                                android:layout_height="17dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_checkbox_unchecked" />
+
+                            <TextView
+                                android:id="@+id/tv_wish_3"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:layout_weight="1"
+                                android:text="Jajan"
+                                android:textColor="#FF4F3B3A"
+                                android:textSize="9.5sp" />
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_marginStart="4dp"
+                                android:contentDescription="@null"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/img_wish_boba" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- 6. Full Width Card: "Kenangan Kita" (4 Horizontal Slots: 3 Photos + Tambah Kenangan) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_bento_memories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:outlineAmbientShadowColor="#12463032"
+                android:outlineSpotShadowColor="#1A463032"
+                app:cardBackgroundColor="@color/surface"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:strokeColor="#FFF3E8E5"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <!-- Header -->
+                    <LinearLayout
+                        android:id="@+id/header_memories_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_gallery_pink" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:text="Kenangan Kita"
+                            android:textColor="#FF2B1D1D"
+                            android:textSize="13.5sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="13dp"
+                            android:layout_height="13dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_chevron_right" />
+                    </LinearLayout>
+
+                    <!-- 4 Horizontal Slots Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="96dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <!-- Photo 1: Couple Sunset -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_memory_1"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="3.5dp"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardCornerRadius="13dp"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:contentDescription="@null"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/img_memory_1" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <!-- Photo 2: Tulips -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_memory_2"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="2.5dp"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardCornerRadius="13dp"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:contentDescription="@null"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/img_memory_2" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <!-- Photo 3: Sunset Village -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_memory_3"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="2.5dp"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardCornerRadius="13dp"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:contentDescription="@null"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/img_memory_3" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <!-- Slot 4: Tambah Kenangan -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_add_memory"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="3.5dp"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardBackgroundColor="#FFFDF9F8"
+                            app:cardCornerRadius="13dp"
+                            app:cardElevation="0dp"
+                            app:rippleColor="#15D45863"
+                            app:strokeColor="#FFF0E6E3"
+                            app:strokeWidth="1dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:paddingHorizontal="4dp">
+
+                                <ImageView
+                                    android:layout_width="19dp"
+                                    android:layout_height="19dp"
+                                    android:contentDescription="@null"
+                                    android:src="@drawable/ic_add"
+                                    app:tint="#FFD45863" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center"
+                                    android:includeFontPadding="false"
+                                    android:lineSpacingMultiplier="1.05"
+                                    android:text="Tambah\nkenangan"
+                                    android:textColor="#FF786564"
+                                    android:textSize="9sp" />
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- 7. Bottom Navigation Bar with 5 Items: Beranda, Wishlist, Mood, Kenangan, Ruang Kita -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:outlineAmbientShadowColor="#1F463032"
+        android:outlineSpotShadowColor="#33463032"
+        app:cardBackgroundColor="#FFFFFBFA"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="#FFF3E7E4"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="6dp">
+
+            <!-- Tab 1: Beranda (Active Pill) -->
+            <FrameLayout
+                android:id="@+id/nav_home"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.08"
+                android:clickable="true"
+                android:focusable="true">
+
+                <LinearLayout
+                    android:id="@+id/pill_nav_home"
+                    android:layout_width="72dp"
+                    android:layout_height="52dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_nav_active_pill"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="4dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:contentDescription="Beranda"
+                        android:src="@drawable/ic_nav_home_filled" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="Beranda"
+                        android:textColor="#FFD45863"
+                        android:textSize="9.2sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <!-- Tab 2: Wishlist -->
+            <LinearLayout
+                android:id="@+id/nav_wishlist"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="Wishlist"
+                    android:src="@drawable/ic_nav_wishlist_outline" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:text="Wishlist"
+                    android:textColor="#FF6B5856"
+                    android:textSize="9.2sp" />
+            </LinearLayout>
+
+            <!-- Tab 3: Mood -->
+            <LinearLayout
+                android:id="@+id/nav_mood"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.95"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="Mood"
+                    android:src="@drawable/ic_nav_mood_outline" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:text="Mood"
+                    android:textColor="#FF6B5856"
+                    android:textSize="9.2sp" />
+            </LinearLayout>
+
+            <!-- Tab 4: Kenangan -->
+            <LinearLayout
+                android:id="@+id/nav_memories"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.08"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="Kenangan"
+                    android:src="@drawable/ic_nav_galeri_outline" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:text="Kenangan"
+                    android:textColor="#FF6B5856"
+                    android:textSize="9.2sp" />
+            </LinearLayout>
+
+            <!-- Tab 5: Ruang Kita -->
+            <LinearLayout
+                android:id="@+id/nav_profile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.95"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="Ruang Kita"
+                    android:src="@drawable/ic_nav_profil_outline" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:text="Ruang Kita"
+                    android:textColor="#FF6B5856"
+                    android:textSize="9.2sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

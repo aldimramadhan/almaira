@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="18dp"
+    app:cardBackgroundColor="#FFFFFAF8"
+    app:cardCornerRadius="28dp"
+    app:cardElevation="10dp"
+    app:strokeColor="#FFF2E4E0"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingHorizontal="18dp"
+        android:paddingTop="22dp"
+        android:paddingBottom="20dp">
+
+        <!-- Top Badge Pill -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:background="@drawable/bg_pill_bahagia"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="12dp">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:contentDescription="@null"
+                android:src="@drawable/img_heart_3d" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:includeFontPadding="false"
+                android:text="Our Mood • Hari Ini"
+                android:textColor="#FFD45863"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Dialog Title -->
+        <TextView
+            android:id="@+id/tv_dialog_mood_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:letterSpacing="-0.01"
+            android:text="Bagaimana perasaanmu\nhari ini? ♡"
+            android:textColor="#FF2B1D1D"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+        <!-- Dialog Subtitle -->
+        <TextView
+            android:id="@+id/tv_dialog_mood_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.18"
+            android:text="Pilih mood kamu dulu yuk agar pasanganmu\ntahu kabar hatimu hari ini."
+            android:textColor="#FF786564"
+            android:textSize="12sp" />
+
+        <!-- 3x3 Grid of Mood Cards (Emoticon on Top + Text Below) -->
+        <LinearLayout
+            android:id="@+id/grid_mood_cards"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+
+            <!-- Row 1: Senang, Sedih, Kesel -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <!-- Card 0: Senang -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_mood_opt_0"
+                    android:layout_width="0dp"
+                    android:layout_height="92dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFFFF"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:rippleColor="#18D45863"
+                    app:strokeColor="#FFF1E3DF"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <FrameLayout
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:background="@drawable/bg_squircle_rose">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="😊"
+                                android:textSize="23sp" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:includeFontPadding="false"
+                            android:text="Senang"
+                            android:textColor="#FF2B1D1D"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Card 1: Sedih -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_mood_opt_1"
+                    android:layout_width="0dp"
+                    android:layout_height="92dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFFFF"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:rippleColor="#18D45863"
+                    app:strokeColor="#FFF1E3DF"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <FrameLayout
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:background="@drawable/bg_squircle_rose">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="😢"
+                                android:textSize="23sp" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:includeFontPadding="false"
+                            android:text="Sedih"
+                            android:textColor="#FF2B1D1D"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Card 2: Kesel -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_mood_opt_2"
+                    android:layout_width="0dp"
+                    android:layout_height="92dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFFFF"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:rippleColor="#18D45863"
+                    app:strokeColor="#FFF1E3DF"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <FrameLayout
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:background="@drawable/bg_squircle_rose">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="😤"
+                                android:textSize="23sp" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:includeFontPadding="false"
+                            android:text="Kesel"
+                            android:textColor="#FF2B1D1D"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Row 2: Semangat, Kangen, Sayang -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <!-- Card 3: Semangat -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_mood_opt_3"
+                    android:layout_width="0dp"
+                    android:layout_height="92dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFFFF"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:rippleColor="#18D45863"
+                    app:strokeColor="#FFF1E3DF"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <FrameLayout
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:background="@drawable/bg_squircle_rose">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="🤩"
+                                android:textSize="23sp" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:includeFontPadding="false"
+                            android:text="Semangat"
+                            android:textColor="#FF2B1D1D"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Card 4: Kangen -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_mood_opt_4"
+                    android:layout_width="0dp"
+                    android:layout_height="92dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFFFF"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:rippleColor="#18D45863"
+                    app:strokeColor="#FFF1E3DF"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <FrameLayout
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:background="@drawable/bg_squircle_rose">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="🥺"
+                                android:textSize="23sp" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:includeFontPadding="false"
+                            android:text="Kangen"
+                            android:textColor="#FF2B1D1D"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Card 5: Sayang -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_mood_opt_5"
+                    android:layout_width="0dp"
+                    android:layout_height="92dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFFFF"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:rippleColor="#18D45863"
+                    app:strokeColor="#FFF1E3DF"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <FrameLayout
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:background="@drawable/bg_squircle_rose">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="🥰"
+                                android:textSize="23sp" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:includeFontPadding="false"
+                            android:text="Sayang"
+                            android:textColor="#FF2B1D1D"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Row 3: Tenang, Capek, Biasa Aja -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <!-- Card 6: Tenang -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_mood_opt_6"
+                    android:layout_width="0dp"
+                    android:layout_height="92dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFFFF"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:rippleColor="#18D45863"
+                    app:strokeColor="#FFF1E3DF"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <FrameLayout
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:background="@drawable/bg_squircle_rose">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="😌"
+                                android:textSize="23sp" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:includeFontPadding="false"
+                            android:text="Tenang"
+                            android:textColor="#FF2B1D1D"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Card 7: Capek -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_mood_opt_7"
+                    android:layout_width="0dp"
+                    android:layout_height="92dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFFFF"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:rippleColor="#18D45863"
+                    app:strokeColor="#FFF1E3DF"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <FrameLayout
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:background="@drawable/bg_squircle_rose">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="🫠"
+                                android:textSize="23sp" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:includeFontPadding="false"
+                            android:text="Capek"
+                            android:textColor="#FF2B1D1D"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Card 8: Biasa Aja -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_mood_opt_8"
+                    android:layout_width="0dp"
+                    android:layout_height="92dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFFFF"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:rippleColor="#18D45863"
+                    app:strokeColor="#FFF1E3DF"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <FrameLayout
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:background="@drawable/bg_squircle_rose">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="😐"
+                                android:textSize="23sp" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:includeFontPadding="false"
+                            android:text="Biasa Aja"
+                            android:textColor="#FF2B1D1D"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Primary Save Button -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btn_confirm_mood"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="18dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#FFD45863"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="2dp"
+            app:rippleColor="#33FFFFFF"
+            app:strokeWidth="0dp">
+
+            <TextView
+                android:id="@+id/tv_btn_confirm_mood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:includeFontPadding="false"
+                android:text="Pilih Mood Terlebih Dahulu"
+                android:textColor="#FFFFFFFF"
+                android:textSize="13.5sp"
+                android:textStyle="bold" />
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -36,6 +36,12 @@
             android:name=".signin.SignInActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
+        <!-- Home (MainActivity) -->
+        <activity
+            android:name=".main.MainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

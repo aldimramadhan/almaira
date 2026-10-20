@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="360dp"
+    android:height="280dp"
+    android:viewportWidth="360"
+    android:viewportHeight="280">
+    <!-- Outer soft blush wave -->
+    <path
+        android:fillColor="#FFF8EEEC"
+        android:pathData="M140,85 C215,50 285,35 360,40 L360,260 L100,260 C110,180 115,120 140,85 Z" />
+    <!-- Inner warm rose-cream wave -->
+    <path
+        android:fillColor="#FFF5E6E3"
+        android:pathData="M210,105 C265,75 315,65 360,72 L360,260 L175,260 C182,190 190,135 210,105 Z" />
+</vector>

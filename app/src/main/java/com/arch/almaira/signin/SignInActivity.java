@@ -1,15 +1,21 @@
 package com.arch.almaira.signin;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
@@ -18,9 +24,22 @@ import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.arch.almaira.R;
 import com.arch.almaira.base.BaseActivity;
+import com.arch.almaira.main.MainActivity;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Locale;
 
 public class SignInActivity extends BaseActivity {
+
+    private static final String PREF_AUTH = "almaira_auth";
+    private static final String KEY_IS_LOGGED_IN = "is_logged_in";
+    private static final String KEY_LOGGED_USER = "logged_user";
+
+    // Static credentials
+    private static final String USER_1 = "aldimramadhan";
+    private static final String USER_2 = "iraa";
+    private static final String STATIC_PASSWORD = "110726";
 
     private MaterialCardView cardInputUsername;
     private MaterialCardView cardInputPassword;
@@ -58,6 +77,7 @@ public class SignInActivity extends BaseActivity {
 
         initViews();
         setupInteractions();
+        loadSavedCredentials();
     }
 
     private void initViews() {
@@ -113,7 +133,7 @@ public class SignInActivity extends BaseActivity {
                     : R.drawable.ic_checkbox_unchecked);
         });
 
-        // Primary Sign-In button ("Masuk ->") with subtle bounce feedback
+        // Primary Sign-In button ("Masuk ->") with subtle bounce feedback & credential validation
         btnSigninMasuk.setOnClickListener(v -> {
             v.animate()
                     .scaleX(0.96f)
@@ -123,29 +143,132 @@ public class SignInActivity extends BaseActivity {
                             .scaleX(1.0f)
                             .scaleY(1.0f)
                             .setDuration(160)
-                            .withEndAction(this::navigateToMain)
+                            .withEndAction(this::attemptLogin)
                             .start())
                     .start();
         });
+    }
+
+    private void attemptLogin() {
+        String username = etUsername.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+
+        if (TextUtils.isEmpty(username)) {
+            etUsername.setError("Masukkan username kamu ♡");
+            etUsername.requestFocus();
+            shakeView(cardInputUsername);
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            etPassword.setError("Masukkan password kamu ♡");
+            etPassword.requestFocus();
+            shakeView(cardInputPassword);
+            return;
+        }
+
+        boolean isValidUser = username.equalsIgnoreCase(USER_1) || username.equalsIgnoreCase(USER_2);
+        boolean isValidPass = password.equals(STATIC_PASSWORD);
+
+        if (isValidUser && isValidPass) {
+            String displayName = username.equalsIgnoreCase(USER_1) ? "Aldi" : "Ira";
+
+            // Save login session if Remember Me is checked
+            SharedPreferences prefs = getSharedPreferences(PREF_AUTH, MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean(KEY_IS_LOGGED_IN, isRememberMeChecked);
+            editor.putString(KEY_LOGGED_USER, username.toLowerCase(Locale.ROOT));
+            editor.apply();
+
+            showCustomSnackBar("Selamat datang kembali, " + displayName + " ♡", R.drawable.ic_heart);
+
+            findViewById(R.id.signin_root).postDelayed(this::navigateToMain, 400);
+        } else {
+            shakeView(cardInputUsername);
+            shakeView(cardInputPassword);
+            showCustomSnackBar("Username atau password salah ya sayang ♡", R.drawable.ic_heart);
+        }
+    }
+
+    private void loadSavedCredentials() {
+        SharedPreferences prefs = getSharedPreferences(PREF_AUTH, MODE_PRIVATE);
+        String savedUser = prefs.getString(KEY_LOGGED_USER, "");
+        if (!TextUtils.isEmpty(savedUser)) {
+            etUsername.setText(savedUser);
+            etPassword.requestFocus();
+        }
+    }
+
+    private void shakeView(View view) {
+        view.animate()
+                .translationX(-16f)
+                .setDuration(50)
+                .withEndAction(() -> view.animate()
+                        .translationX(16f)
+                        .setDuration(50)
+                        .withEndAction(() -> view.animate()
+                                .translationX(-8f)
+                                .setDuration(50)
+                                .withEndAction(() -> view.animate()
+                                        .translationX(8f)
+                                        .setDuration(50)
+                                        .withEndAction(() -> view.animate()
+                                                .translationX(0f)
+                                                .setDuration(50)
+                                                .start())
+                                        .start())
+                                .start())
+                        .start())
+                .start();
+    }
+
+    private void showCustomSnackBar(String message, int iconRes) {
+        View rootView = findViewById(R.id.signin_root);
+        Snackbar snackbar = Snackbar.make(rootView, "", Snackbar.LENGTH_SHORT);
+        snackbar.getView().setBackgroundColor(Color.TRANSPARENT);
+
+        Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
+        layout.setPadding(0, 0, 0, 0);
+
+        MaterialCardView card = new MaterialCardView(this);
+        card.setCardBackgroundColor(ContextCompat.getColor(this, R.color.deep_rose_plum));
+        card.setRadius(dpToPx(18));
+        card.setCardElevation(dpToPx(6));
+        card.setStrokeWidth(0);
+
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        row.setPadding(dpToPx(16), dpToPx(12), dpToPx(16), dpToPx(12));
+
+        if (iconRes != 0) {
+            ImageView icon = new ImageView(this);
+            icon.setImageResource(iconRes);
+            icon.setColorFilter(ContextCompat.getColor(this, R.color.warm_rose));
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dpToPx(18), dpToPx(18));
+            lp.setMarginEnd(dpToPx(10));
+            row.addView(icon, lp);
+        }
+
+        TextView tv = new TextView(this);
+        tv.setText(message);
+        tv.setTextColor(Color.WHITE);
+        tv.setTextSize(13f);
+        tv.setTypeface(null, Typeface.BOLD);
+        row.addView(tv);
+
+        card.addView(row);
+        layout.addView(card, 0);
+        snackbar.show();
     }
 
     private void navigateToMain() {
         if (isNavigating) return;
         isNavigating = true;
 
-        try {
-            Class<?> mainClass = Class.forName("com.arch.almaira.main.MainActivity");
-            startActivity(new Intent(SignInActivity.this, mainClass));
-            finish();
-        } catch (ClassNotFoundException e) {
-            try {
-                Class<?> legacyMain = Class.forName("com.arch.almaira.MainActivity");
-                startActivity(new Intent(SignInActivity.this, legacyMain));
-                finish();
-            } catch (ClassNotFoundException ignored) {
-                isNavigating = false;
-            }
-        }
+        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private int dpToPx(int dp) {
