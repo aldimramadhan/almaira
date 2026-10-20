@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary Brand Colors (Matching Reference Design) -->
+    <color name="deep_rose_plum">#FF463032</color>
+    <color name="deep_rose_plum_light">#FF5E4345</color>
+    <color name="warm_rose">#FFD2676C</color>
+    <color name="warm_rose_light">#FFFCE8E9</color>
+    <color name="warm_rose_dark">#FFB85055</color>
+
+    <!-- Background & Surface -->
+    <color name="off_white">#FFFDF7F4</color>
+    <color name="background">#FFFDF7F4</color>
+    <color name="surface">#FFFFFFFF</color>
+    <color name="surface_muted">#FFF7ECE8</color>
+
+    <!-- Soft Shadows & Borders -->
+    <color name="shadow_light">#FFFFFFFF</color>
+    <color name="shadow_dark">#FFF0DFDA</color>
+    <color name="border_subtle">#FFF0DFDA</color>
+    <color name="dot_inactive">#FFE8D6D4</color>
+
+    <!-- Typography -->
+    <color name="text_primary">#FF463032</color>
+    <color name="text_secondary">#FF826C6A</color>
+    <color name="text_skip">#FF66514F</color>
+    <color name="text_muted">#FFA89290</color>
 </resources>

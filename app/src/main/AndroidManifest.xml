@@ -10,10 +10,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ALMAIRA">
+        android:theme="@style/Theme.Almaira">
         <activity
             android:name=".splashscreen"
             android:exported="true"
+            android:theme="@style/Theme.Almaira.Splash"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,7 +1,29 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Global Activity Fade Transition Style -->
+    <style name="Animation.Almaira.Fade" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/fade_out</item>
+    </style>
+
     <!-- Base application theme. -->
-    <style name="Base.Theme.ALMAIRA" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <style name="Base.Theme.Almaira" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/deep_rose_plum</item>
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:navigationBarColor">@color/background</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Almaira.Fade</item>
+    </style>
+
+    <style name="Theme.Almaira" parent="Base.Theme.Almaira" />
+
+    <!-- Pure black theme for splashscreen matching Neummio implementation -->
+    <style name="Theme.Almaira.Splash" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/black</item>
+        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Almaira.Fade</item>
     </style>
 </resources>
