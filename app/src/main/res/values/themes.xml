@@ -10,8 +10,9 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Almaira" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/deep_rose_plum</item>
-        <item name="android:statusBarColor">@color/background</item>
-        <item name="android:navigationBarColor">@color/background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarDividerColor" tools:targetApi="p">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowAnimationStyle">@style/Animation.Almaira.Fade</item>

@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
@@ -25,6 +26,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.arch.almaira.R;
 import com.arch.almaira.base.BaseActivity;
+import com.arch.almaira.main.MainActivity;
 import com.arch.almaira.onboard.adapter.OnboardAdapter;
 import com.arch.almaira.onboard.model.OnboardItem;
 import com.arch.almaira.signin.SignInActivity;
@@ -51,6 +53,15 @@ public class OnboardActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences authPrefs = getSharedPreferences("almaira_auth", MODE_PRIVATE);
+        if (authPrefs.getBoolean("is_logged_in", false)) {
+            Intent intent = new Intent(OnboardActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_onboard);
 

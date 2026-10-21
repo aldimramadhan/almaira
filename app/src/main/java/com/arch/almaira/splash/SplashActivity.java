@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +20,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.arch.almaira.R;
+import com.arch.almaira.main.MainActivity;
 import com.arch.almaira.onboard.OnboardActivity;
 
 /**
@@ -200,7 +202,15 @@ public class SplashActivity extends AppCompatActivity {
         }
         isTransitioned = true;
 
-        Intent intent = new Intent(SplashActivity.this, OnboardActivity.class);
+        SharedPreferences authPrefs = getSharedPreferences("almaira_auth", MODE_PRIVATE);
+        boolean isLoggedIn = authPrefs.getBoolean("is_logged_in", false);
+
+        Intent intent;
+        if (isLoggedIn) {
+            intent = new Intent(SplashActivity.this, MainActivity.class);
+        } else {
+            intent = new Intent(SplashActivity.this, OnboardActivity.class);
+        }
         startActivity(intent);
 
         // 900ms smooth fade transition

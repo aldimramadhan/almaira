@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_rounded"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Header Pill -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/bg_pill_pink_light"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="5dp">
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_heart"
+            app:tint="#FFD45863" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:includeFontPadding="false"
+            android:text="Our Wishlist • Impian Baru"
+            android:textColor="#FFD45863"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:letterSpacing="-0.02"
+        android:text="Wujudkan Impian Bersama ♡"
+        android:textColor="#FF2B1D1D"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:text="Tuliskan keinginan manis yang ingin kamu wujudkan bersama pasanganmu."
+        android:textColor="#FF786564"
+        android:textSize="12sp" />
+
+    <!-- 1. Input: Nama Impian (dengan Cutout Label di atasnya) -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:clipChildren="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/selector_outlined_input_box"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="14dp">
+
+            <EditText
+                android:id="@+id/et_wish_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:hint="Misal: Liburan ke Bromo, Beli cincin couple..."
+                android:importantForAutofill="no"
+                android:inputType="textCapSentences"
+                android:textColor="#FF2B1D1D"
+                android:textColorHint="#FFB3A1A0"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- Floating Cutout Label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:background="#FFFDFBFA"
+            android:includeFontPadding="false"
+            android:paddingHorizontal="6dp"
+            android:text="Nama Impian"
+            android:textColor="#FF786564"
+            android:textSize="11.5sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <!-- 2 & 3. Select Kategori & Select Target Waktu (Side-by-Side dengan Cutout Label & Dropdown Arrow) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:baselineAligned="false"
+        android:clipChildren="false"
+        android:orientation="horizontal">
+
+        <!-- Select Kategori -->
+        <FrameLayout
+            android:id="@+id/container_select_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clipChildren="false">
+
+            <LinearLayout
+                android:id="@+id/box_select_category"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/selector_outlined_input_box"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp">
+
+                <TextView
+                    android:id="@+id/tv_selected_category"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="✈️ Travel"
+                    android:textColor="#FF2B1D1D"
+                    android:textSize="12.5sp" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="4dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_arrow_drop_down"
+                    app:tint="#FF786564" />
+            </LinearLayout>
+
+            <!-- Floating Cutout Label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:background="#FFFDFBFA"
+                android:includeFontPadding="false"
+                android:paddingHorizontal="6dp"
+                android:text="Kategori"
+                android:textColor="#FF786564"
+                android:textSize="11.5sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Select Target Waktu -->
+        <FrameLayout
+            android:id="@+id/container_select_target_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1.15"
+            android:clipChildren="false">
+
+            <LinearLayout
+                android:id="@+id/card_select_target_date"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/selector_outlined_input_box"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp">
+
+                <TextView
+                    android:id="@+id/tv_selected_target_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:hint="Pilih waktu..."
+                    android:maxLines="1"
+                    android:textColor="#FF2B1D1D"
+                    android:textColorHint="#FFB3A1A0"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/btn_clear_target_date"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:contentDescription="Hapus tanggal"
+                    android:focusable="true"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_close"
+                    android:visibility="gone"
+                    app:tint="#FF9E8C8B" />
+
+                <ImageView
+                    android:id="@+id/iv_dropdown_date"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="2dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_arrow_drop_down"
+                    app:tint="#FF786564" />
+            </LinearLayout>
+
+            <!-- Floating Cutout Label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:background="#FFFDFBFA"
+                android:includeFontPadding="false"
+                android:paddingHorizontal="6dp"
+                android:text="Target Waktu"
+                android:textColor="#FF786564"
+                android:textSize="11.5sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <!-- Action Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cancel_add"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:text="Batal"
+            android:textColor="#FF786564"
+            android:textSize="13.5sp"
+            app:cornerRadius="24dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save_wish"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1.6"
+            android:backgroundTint="#FFD45863"
+            android:text="Simpan Impian ♡"
+            android:textColor="#FFFFFFFF"
+            android:textSize="13.5sp"
+            android:textStyle="bold"
+            app:cornerRadius="24dp" />
+    </LinearLayout>
+
+</LinearLayout>

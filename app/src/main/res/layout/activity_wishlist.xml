@@ -1,0 +1,776 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/wishlist_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    tools:context=".wishlist.WishlistActivity">
+
+    <!-- Scrollable Content -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view_wishlist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:fillViewport="false"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/wishlist_content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingHorizontal="18dp"
+            android:paddingTop="86dp"
+            android:paddingBottom="96dp">
+
+            <!-- 1. Romantic Bento Progress Summary Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_progress_summary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:outlineAmbientShadowColor="#0D463032"
+                android:outlineSpotShadowColor="#14463032"
+                app:cardBackgroundColor="#FFFFFFFF"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="2dp"
+                app:strokeColor="#FFF0EAE7"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <!-- Icon badge -->
+                        <FrameLayout
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="@drawable/bg_badge_category">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_wishlist_bag_pink" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_progress_headline"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:letterSpacing="-0.01"
+                                android:text="Progres Impian Kita"
+                                android:textColor="#FF2B1D1D"
+                                android:textSize="16.5sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_progress_status"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2.5dp"
+                                android:text="2 dari 6 impian telah terwujud ♡"
+                                android:textColor="#FF786564"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <!-- Percentage Badge Pill -->
+                        <TextView
+                            android:id="@+id/tv_progress_percentage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_pill_wishlist_add"
+                            android:paddingHorizontal="11dp"
+                            android:paddingVertical="5dp"
+                            android:text="33%"
+                            android:textColor="#FFD45863"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Rounded Coral Gradient Progress Bar -->
+                    <ProgressBar
+                        android:id="@+id/progress_bar_wishlist"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="9dp"
+                        android:layout_marginTop="18dp"
+                        android:max="100"
+                        android:progress="33"
+                        android:progressDrawable="@drawable/progress_bar_wishlist_custom" />
+
+                    <!-- Quick Statistic Badges -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <!-- Total Stat Pill -->
+                        <TextView
+                            android:id="@+id/tv_stat_total"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_stat_pill_total"
+                            android:includeFontPadding="false"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="5dp"
+                            android:text="Total: 6"
+                            android:textColor="#FF6A5958"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+
+                        <!-- Completed Stat Pill -->
+                        <TextView
+                            android:id="@+id/tv_stat_completed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:background="@drawable/bg_stat_pill_completed"
+                            android:includeFontPadding="false"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="5dp"
+                            android:text="✓ Tercapai: 2"
+                            android:textColor="#FF2E7D32"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+
+                        <!-- Pending Stat Pill -->
+                        <TextView
+                            android:id="@+id/tv_stat_pending"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:background="@drawable/bg_stat_pill_pending"
+                            android:includeFontPadding="false"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="5dp"
+                            android:text="• Belum: 4"
+                            android:textColor="#FFD45863"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 2. STATUS FILTER: Terpisah (Semua | Belum Selesai | Selesai ♡) -->
+            <LinearLayout
+                android:id="@+id/layout_status_segment"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/bg_status_segment_container"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="3dp">
+
+                <!-- Tab Status: Semua -->
+                <TextView
+                    android:id="@+id/tab_status_all"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_status_tab_active"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:text="Semua"
+                    android:textColor="#FFD45863"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <!-- Tab Status: Belum Selesai -->
+                <TextView
+                    android:id="@+id/tab_status_pending"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.2"
+                    android:background="@android:color/transparent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:text="Belum Selesai"
+                    android:textColor="#FF786564"
+                    android:textSize="12.5sp" />
+
+                <!-- Tab Status: Sudah Selesai -->
+                <TextView
+                    android:id="@+id/tab_status_completed"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.2"
+                    android:background="@android:color/transparent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:text="Selesai ♡"
+                    android:textColor="#FF786564"
+                    android:textSize="12.5sp" />
+            </LinearLayout>
+
+            <!-- 3. KATEGORI FILTER: Terpisah (Horizontal Scroll Kategori) -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/layout_category_chips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal">
+
+                    <!-- Kategori: Semua Kategori -->
+                    <TextView
+                        android:id="@+id/chip_cat_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_filter_chip_active"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="7dp"
+                        android:text="Semua Kategori"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <!-- Kategori: Travel & Trip -->
+                    <TextView
+                        android:id="@+id/chip_cat_travel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_filter_chip_inactive"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="7dp"
+                        android:text="✈️ Travel &amp; Trip"
+                        android:textColor="#FF786564"
+                        android:textSize="12sp" />
+
+                    <!-- Kategori: Kencan -->
+                    <TextView
+                        android:id="@+id/chip_cat_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_filter_chip_inactive"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="7dp"
+                        android:text="🌸 Kencan"
+                        android:textColor="#FF786564"
+                        android:textSize="12sp" />
+
+                    <!-- Kategori: Kuliner -->
+                    <TextView
+                        android:id="@+id/chip_cat_culinary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_filter_chip_inactive"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="7dp"
+                        android:text="🧋 Kuliner"
+                        android:textColor="#FF786564"
+                        android:textSize="12sp" />
+
+                    <!-- Kategori: Barang Impian -->
+                    <TextView
+                        android:id="@+id/chip_cat_goods"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_filter_chip_inactive"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="7dp"
+                        android:text="🎁 Barang Impian"
+                        android:textColor="#FF786564"
+                        android:textSize="12sp" />
+
+                    <!-- Kategori: Lainnya -->
+                    <TextView
+                        android:id="@+id/chip_cat_other"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_filter_chip_inactive"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="7dp"
+                        android:text="✨ Lainnya"
+                        android:textColor="#FF786564"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- 4. Wishlist List Header / Count Tag -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_section_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:letterSpacing="-0.01"
+                    android:text="Daftar Impian"
+                    android:textColor="#FF2B1D1D"
+                    android:textSize="15.5sp"
+                    android:textStyle="bold" />
+
+                <!-- Stylized Count Pill -->
+                <TextView
+                    android:id="@+id/tv_items_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_badge_category"
+                    android:includeFontPadding="false"
+                    android:paddingHorizontal="9dp"
+                    android:paddingVertical="4dp"
+                    android:text="6 impian"
+                    android:textColor="#FFD45863"
+                    android:textSize="11.5sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- 5. RecyclerView for Wishlist items -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_wishlist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_wishlist" />
+
+            <!-- 6. Empty State Layout -->
+            <LinearLayout
+                android:id="@+id/layout_empty_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="36dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <FrameLayout
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:background="@drawable/bg_badge_category">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_wishlist_bag_pink" />
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:letterSpacing="-0.01"
+                    android:text="Belum Ada Impian di Kategori Ini"
+                    android:textColor="#FF2B1D1D"
+                    android:textSize="15.5sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:text="Yuk tambahkan rencana manis atau destinasi yang ingin kalian wujudkan bersama!"
+                    android:textColor="#FF786564"
+                    android:textSize="12sp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btn_empty_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFD45863"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="18dp"
+                        android:paddingVertical="10dp">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_add"
+                            app:tint="#FFFFFFFF" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Tambah Impian Sekarang"
+                            android:textColor="#FFFFFFFF"
+                            android:textSize="12.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Top Bar Container: Title on Left, Add on Right (NO BACK BUTTON) -->
+    <LinearLayout
+        android:id="@+id/top_bar_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:elevation="0dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Solid Status Bar Filler -->
+        <View
+            android:id="@+id/view_status_bar_filler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/background" />
+
+        <LinearLayout
+            android:id="@+id/top_bar_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp">
+
+            <!-- Left side: Title & Subtitle (No back button) -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:letterSpacing="-0.01"
+                        android:text="Wujudkan impian kita"
+                        android:textColor="#FF786564"
+                        android:textSize="12sp" />
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_marginStart="4dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_heart"
+                        app:tint="#FFD45863" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_top_bar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:letterSpacing="-0.02"
+                    android:text="Wishlist Kita ♡"
+                    android:textColor="#FF2B1D1D"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Add Wishlist Squircle Button -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_add_wishlist"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:outlineAmbientShadowColor="#0D463032"
+                android:outlineSpotShadowColor="#14463032"
+                app:cardBackgroundColor="#FFFFFFFF"
+                app:cardCornerRadius="13dp"
+                app:cardElevation="2dp"
+                app:strokeColor="#FFF0EAE7"
+                app:strokeWidth="1dp">
+
+                <FrameLayout
+                    android:id="@+id/btn_add_wishlist_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="Tambah Wishlist"
+                        android:src="@drawable/ic_add"
+                        app:tint="#FFD45863" />
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <!-- Seamless gradient feather underneath Top Bar on scroll -->
+        <View
+            android:id="@+id/view_top_bar_feather"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_top_bar_feather_fade" />
+    </LinearLayout>
+
+    <!-- Floating Split Bottom Navigation Bar (Qibbly Style) -->
+    <LinearLayout
+        android:id="@+id/layout_bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="16dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- Left Capsule Container: Secondary Menus (Wishlist active!) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_bottom_nav_left"
+            android:layout_width="0dp"
+            android:layout_height="58dp"
+            android:layout_weight="1"
+            android:outlineAmbientShadowColor="#1A463032"
+            android:outlineSpotShadowColor="#26463032"
+            app:cardBackgroundColor="#FFFDFBFA"
+            app:cardCornerRadius="26dp"
+            app:cardElevation="8dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingHorizontal="6dp">
+
+                <!-- Tab 1: Wishlist (Active with pill highlight) -->
+                <FrameLayout
+                    android:id="@+id/nav_wishlist"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <FrameLayout
+                        android:id="@+id/pill_nav_wishlist"
+                        android:layout_width="42dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_nav_pill_active">
+
+                        <ImageView
+                            android:id="@+id/iv_nav_wishlist"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="Wishlist"
+                            android:src="@drawable/ic_nav_wishlist_outline"
+                            app:tint="#FFD45863" />
+                    </FrameLayout>
+                </FrameLayout>
+
+                <!-- Tab 2: Mood -->
+                <FrameLayout
+                    android:id="@+id/nav_mood"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <FrameLayout
+                        android:id="@+id/pill_nav_mood"
+                        android:layout_width="42dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center">
+
+                        <ImageView
+                            android:id="@+id/iv_nav_mood"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="Mood"
+                            android:src="@drawable/ic_nav_mood_outline"
+                            app:tint="#FF9E8C8B" />
+                    </FrameLayout>
+                </FrameLayout>
+
+                <!-- Tab 3: Kenangan -->
+                <FrameLayout
+                    android:id="@+id/nav_memories"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <FrameLayout
+                        android:id="@+id/pill_nav_memories"
+                        android:layout_width="42dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center">
+
+                        <ImageView
+                            android:id="@+id/iv_nav_memories"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="Kenangan"
+                            android:src="@drawable/ic_nav_galeri_outline"
+                            app:tint="#FF9E8C8B" />
+                    </FrameLayout>
+                </FrameLayout>
+
+                <!-- Tab 4: Ruang Kita -->
+                <FrameLayout
+                    android:id="@+id/nav_profile"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <FrameLayout
+                        android:id="@+id/pill_nav_profile"
+                        android:layout_width="42dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center">
+
+                        <ImageView
+                            android:id="@+id/iv_nav_profile"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="Ruang Kita"
+                            android:src="@drawable/ic_nav_profil_outline"
+                            app:tint="#FF9E8C8B" />
+                    </FrameLayout>
+                </FrameLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Right Separated Home Button (Tapping returns to MainActivity) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_nav_home"
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            android:layout_marginStart="14dp"
+            android:outlineAmbientShadowColor="#0D463032"
+            android:outlineSpotShadowColor="#1A463032"
+            app:cardBackgroundColor="#FFFFFFFF"
+            app:cardCornerRadius="26dp"
+            app:cardElevation="8dp"
+            app:strokeColor="#FFF0EAE7"
+            app:strokeWidth="1dp">
+
+            <FrameLayout
+                android:id="@+id/nav_home"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:id="@+id/iv_nav_home"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="Beranda"
+                    android:src="@drawable/ic_nav_home_filled"
+                    app:tint="#FF786564" />
+            </FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

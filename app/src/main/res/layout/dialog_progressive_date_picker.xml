@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_rounded"
+    android:orientation="vertical"
+    android:padding="22dp">
+
+    <!-- Top Badge / Header -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/bg_pill_pink_light"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="5dp">
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_calendar_heart"
+            app:tint="#FFD45863" />
+
+        <TextView
+            android:id="@+id/tv_dialog_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="Target Waktu Impian"
+            android:textColor="#FFD45863"
+            android:textSize="11.5sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_step_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:letterSpacing="-0.01"
+        android:text="Pilih Tahun Target ♡"
+        android:textColor="#FF2B1D1D"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_step_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:gravity="center"
+        android:text="Tentukan tahun target impian berdua"
+        android:textColor="#FF786564"
+        android:textSize="12sp" />
+
+    <!-- STEP 1: YEAR SELECTION -->
+    <LinearLayout
+        android:id="@+id/layout_step_year"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <GridLayout
+            android:id="@+id/grid_years"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:columnCount="3">
+            <!-- 9 years (3x3) -->
+        </GridLayout>
+    </LinearLayout>
+
+    <!-- STEP 2: MONTH SELECTION -->
+    <LinearLayout
+        android:id="@+id/layout_step_month"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <!-- Quick Action: Simpan Hanya Tahun Ini -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btn_confirm_year_only"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="14dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#FFFDF2F4"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="0dp"
+            app:strokeColor="#FFFFD1D8"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_check_circle"
+                    app:tint="#FFD45863" />
+
+                <TextView
+                    android:id="@+id/tv_btn_confirm_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:includeFontPadding="false"
+                    android:text="Cukup Pilih Tahun 2026 Saja"
+                    android:textColor="#FFD45863"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Divider with hint -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="Atau pilih bulan impian di bawah:"
+            android:textColor="#FF9E8C8B"
+            android:textSize="11.5sp" />
+
+        <GridLayout
+            android:id="@+id/grid_months"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:columnCount="3">
+            <!-- 12 months (4x3) -->
+        </GridLayout>
+
+        <!-- Back to Year button -->
+        <TextView
+            android:id="@+id/btn_back_to_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:text="◀ Pilih Tahun Lain"
+            android:textColor="#FF9E8C8B"
+            android:textSize="11.5sp" />
+    </LinearLayout>
+
+    <!-- STEP 3: DATE SELECTION -->
+    <LinearLayout
+        android:id="@+id/layout_step_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <!-- Quick Action: Simpan Bulan & Tahun Saja -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btn_confirm_month_only"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="14dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#FFFDF2F4"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="0dp"
+            app:strokeColor="#FFFFD1D8"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_check_circle"
+                    app:tint="#FFD45863" />
+
+                <TextView
+                    android:id="@+id/tv_btn_confirm_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:includeFontPadding="false"
+                    android:text="Cukup Pilih November 2026 Saja"
+                    android:textColor="#FFD45863"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Divider with hint -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="Atau tentukan tanggal pastinya di bawah:"
+            android:textColor="#FF9E8C8B"
+            android:textSize="11.5sp" />
+
+        <!-- Days of Week Header Row (Min Sen Sel Rab Kam Jum Sab) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Min"
+                android:textColor="#FFD45863"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Sen"
+                android:textColor="#FFA89796"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Sel"
+                android:textColor="#FFA89796"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Rab"
+                android:textColor="#FFA89796"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Kam"
+                android:textColor="#FFA89796"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Jum"
+                android:textColor="#FFA89796"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Sab"
+                android:textColor="#FFA89796"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Calendar Grid (7 columns) -->
+        <GridLayout
+            android:id="@+id/grid_days"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:columnCount="7">
+        </GridLayout>
+
+        <!-- Back to Month button -->
+        <TextView
+            android:id="@+id/btn_back_to_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:text="◀ Pilih Bulan Lain"
+            android:textColor="#FF9E8C8B"
+            android:textSize="11.5sp" />
+    </LinearLayout>
+
+    <!-- Bottom Cancel Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_cancel_progressive"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="14dp"
+        android:text="Batal"
+        android:textColor="#FF786564"
+        android:textSize="13sp"
+        app:cornerRadius="20dp" />
+
+</LinearLayout>

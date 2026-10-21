@@ -1,6 +1,7 @@
 package com.arch.almaira.main;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -25,14 +26,28 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.arch.almaira.R;
 import com.arch.almaira.base.BaseActivity;
+import com.arch.almaira.signin.SignInActivity;
+import com.arch.almaira.wishlist.WishlistActivity;
+import com.arch.almaira.wishlist.WishlistItem;
+import com.arch.almaira.wishlist.WishlistManager;
+import android.graphics.Paint;
+import com.google.android.material.carousel.CarouselLayoutManager;
+import com.google.android.material.carousel.CarouselSnapHelper;
+import com.google.android.material.carousel.MultiBrowseCarouselStrategy;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends BaseActivity {
@@ -48,12 +63,15 @@ public class MainActivity extends BaseActivity {
     private static final String PREF_KEY_NOTE_PASANGAN_TIME = "note_pasangan_time";
 
     private TextView tvGreetingTitle;
+    private NestedScrollView scrollView;
+    private View topBarContainer;
     private View btnNotification;
     private View btnSettings;
     private View cardHeroSpace;
+    private TextView tvDaysCount;
+    private TextView tvAnniversaryDate;
 
     // Catatan Kita Components
-    private View cardSharedNotes;
     private View headerNotesCard;
     private View cardNoteKamu;
     private View cardNotePasangan;
@@ -77,18 +95,31 @@ public class MainActivity extends BaseActivity {
     private View headerWishlistCard;
     private LinearLayout itemWish1, itemWish2, itemWish3;
     private ImageView cbWish1, cbWish2, cbWish3;
+    private TextView tvWish1, tvWish2, tvWish3;
+    private View btnAddWishlist;
 
-    // Kenangan Kita Components
+    // Kenangan Kita Carousel Components
     private View headerMemoriesCard;
-    private View cardMemory1, cardMemory2, cardMemory3;
-    private View cardAddMemory;
+    private View btnAddMemoryHeader;
+    private RecyclerView recyclerMemoriesCarousel;
+    private MemoriesCarouselAdapter memoriesAdapter;
+    private CarouselSnapHelper carouselSnapHelper;
+    private int currentCarouselPosition = 0;
+    private final List<MemoryItem> memoryList = new ArrayList<>();
 
-    // Bottom Navigation
+    // Bottom Navigation (Qibbly Style Split Floating Bar)
+    private MaterialCardView cardNavHome;
     private View navHome;
-    private View navWishlist;
-    private View navMood;
-    private View navMemories;
-    private View navProfile;
+    private ImageView ivNavHome;
+    private View navWishlist, pillNavWishlist;
+    private ImageView ivNavWishlist;
+    private View navMood, pillNavMood;
+    private ImageView ivNavMood;
+    private View navMemories, pillNavMemories;
+    private ImageView ivNavMemories;
+    private View navProfile, pillNavProfile;
+    private ImageView ivNavProfile;
+    private int currentNavIndex = 0;
 
     private String currentUserName = "Aldi";
     private String partnerName = "Ira";
@@ -132,7 +163,37 @@ public class MainActivity extends BaseActivity {
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_root), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            v.setPadding(0, 0, 0, 0);
+
+            View statusBarFiller = findViewById(R.id.view_status_bar_filler);
+            if (statusBarFiller != null) {
+                ViewGroup.LayoutParams lp = statusBarFiller.getLayoutParams();
+                lp.height = systemBars.top;
+                statusBarFiller.setLayoutParams(lp);
+            }
+
+            View topBar = findViewById(R.id.top_bar_container);
+            if (topBar != null) {
+                topBar.setPadding(0, 0, 0, 0);
+            }
+
+            View scrollContent = findViewById(R.id.scroll_content_layout);
+            if (scrollContent != null) {
+                scrollContent.setPadding(
+                        dpToPx(16),
+                        systemBars.top + dpToPx(66),
+                        dpToPx(16),
+                        systemBars.bottom + dpToPx(88)
+                );
+            }
+
+            View layoutBottomNav = findViewById(R.id.layout_bottom_nav);
+            if (layoutBottomNav != null) {
+                ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) layoutBottomNav.getLayoutParams();
+                lp.bottomMargin = systemBars.bottom + dpToPx(14);
+                layoutBottomNav.setLayoutParams(lp);
+            }
+
             return insets;
         });
 
@@ -146,7 +207,9 @@ public class MainActivity extends BaseActivity {
         initViews();
         initAuthUser();
         setupListeners();
+        setupMemoriesCarousel();
         loadSharedNotes();
+        updateDaysTogether();
 
         if (savedInstanceState != null) {
             hasSelectedInitialMood = savedInstanceState.getBoolean(KEY_HAS_SELECTED_INITIAL_MOOD, false);
@@ -184,7 +247,7 @@ public class MainActivity extends BaseActivity {
         }
 
         if (tvGreetingTitle != null) {
-            tvGreetingTitle.setText("Hai, Aldi & Ira");
+            tvGreetingTitle.setText("Hai, " + currentUserName);
         }
 
         if (tvNoteKamuAuthor != null && tvNotePasanganAuthor != null) {
@@ -192,19 +255,13 @@ public class MainActivity extends BaseActivity {
             tvNotePasanganAuthor.setText("Dari Ira");
         }
 
-        // Visual indicator: pencil for own note, lock for partner's note
-        if (ivNoteKamuAction != null && ivNotePasanganAction != null) {
-            if (isUserAldi) {
-                ivNoteKamuAction.setImageResource(R.drawable.ic_edit_pencil);
-                ivNoteKamuAction.setColorFilter(Color.parseColor("#FFC95B63"));
-                ivNotePasanganAction.setImageResource(R.drawable.ic_signin_lock);
-                ivNotePasanganAction.setColorFilter(Color.parseColor("#FF9E6D38"));
-            } else {
-                ivNoteKamuAction.setImageResource(R.drawable.ic_signin_lock);
-                ivNoteKamuAction.setColorFilter(Color.parseColor("#FF9E6D38"));
-                ivNotePasanganAction.setImageResource(R.drawable.ic_edit_pencil);
-                ivNotePasanganAction.setColorFilter(Color.parseColor("#FFC95B63"));
-            }
+        if (ivNoteKamuAction != null) {
+            ivNoteKamuAction.setImageResource(R.drawable.ic_more_vert);
+            ivNoteKamuAction.setColorFilter(Color.parseColor("#FFC4A8A5"));
+        }
+        if (ivNotePasanganAction != null) {
+            ivNotePasanganAction.setImageResource(R.drawable.ic_more_vert);
+            ivNotePasanganAction.setColorFilter(Color.parseColor("#FFC4A8A5"));
         }
     }
 
@@ -217,13 +274,16 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initViews() {
+        scrollView = findViewById(R.id.scroll_view);
+        topBarContainer = findViewById(R.id.top_bar_container);
         tvGreetingTitle = findViewById(R.id.tv_greeting_title);
         btnNotification = findViewById(R.id.btn_notification);
         btnSettings = findViewById(R.id.btn_settings);
         cardHeroSpace = findViewById(R.id.card_hero_space);
+        tvDaysCount = findViewById(R.id.tv_days_count);
+        tvAnniversaryDate = findViewById(R.id.tv_anniversary_date);
 
         // Catatan Kita
-        cardSharedNotes = findViewById(R.id.card_shared_notes);
         headerNotesCard = findViewById(R.id.header_notes_card);
         cardNoteKamu = findViewById(R.id.card_note_kamu);
         cardNotePasangan = findViewById(R.id.card_note_pasangan);
@@ -251,20 +311,36 @@ public class MainActivity extends BaseActivity {
         cbWish1 = findViewById(R.id.cb_wish_1);
         cbWish2 = findViewById(R.id.cb_wish_2);
         cbWish3 = findViewById(R.id.cb_wish_3);
+        tvWish1 = findViewById(R.id.tv_wish_1);
+        tvWish2 = findViewById(R.id.tv_wish_2);
+        tvWish3 = findViewById(R.id.tv_wish_3);
+        btnAddWishlist = findViewById(R.id.btn_add_wishlist);
 
-        // Kenangan Kita
+        // Kenangan Kita Carousel
         headerMemoriesCard = findViewById(R.id.header_memories_card);
-        cardMemory1 = findViewById(R.id.card_memory_1);
-        cardMemory2 = findViewById(R.id.card_memory_2);
-        cardMemory3 = findViewById(R.id.card_memory_3);
-        cardAddMemory = findViewById(R.id.card_add_memory);
+        btnAddMemoryHeader = findViewById(R.id.btn_add_memory_header);
+        recyclerMemoriesCarousel = findViewById(R.id.recycler_memories_carousel);
 
-        // Bottom Navigation
+        // Bottom Navigation (Qibbly Style Split Floating Bar)
+        cardNavHome = findViewById(R.id.card_nav_home);
         navHome = findViewById(R.id.nav_home);
+        ivNavHome = findViewById(R.id.iv_nav_home);
+
         navWishlist = findViewById(R.id.nav_wishlist);
+        pillNavWishlist = findViewById(R.id.pill_nav_wishlist);
+        ivNavWishlist = findViewById(R.id.iv_nav_wishlist);
+
         navMood = findViewById(R.id.nav_mood);
+        pillNavMood = findViewById(R.id.pill_nav_mood);
+        ivNavMood = findViewById(R.id.iv_nav_mood);
+
         navMemories = findViewById(R.id.nav_memories);
+        pillNavMemories = findViewById(R.id.pill_nav_memories);
+        ivNavMemories = findViewById(R.id.iv_nav_memories);
+
         navProfile = findViewById(R.id.nav_profile);
+        pillNavProfile = findViewById(R.id.pill_nav_profile);
+        ivNavProfile = findViewById(R.id.iv_nav_profile);
     }
 
     private void setupListeners() {
@@ -272,13 +348,12 @@ public class MainActivity extends BaseActivity {
                 showCustomSnackBar("Beranda • Pasanganmu memperbarui Catatan Kita ♡", R.drawable.ic_heart)
         );
 
-        btnSettings.setOnClickListener(v ->
-                showCustomSnackBar("Pengaturan Ruang Privat almaira ♡", R.drawable.ic_heart)
-        );
+        btnSettings.setOnClickListener(v -> showSettingsDialog());
 
-        cardHeroSpace.setOnClickListener(v ->
-                showCustomSnackBar("Hari ke-468 bersama ♡", R.drawable.ic_heart)
-        );
+        cardHeroSpace.setOnClickListener(v -> {
+            String days = tvDaysCount != null ? tvDaysCount.getText().toString() : "103";
+            showCustomSnackBar("Hari ke-" + days + " bersama sejak 11 Juli 2026 ♡", R.drawable.ic_heart);
+        });
 
         // Catatan Kita Listeners
         // Header allows the active user to write their own note
@@ -287,26 +362,30 @@ public class MainActivity extends BaseActivity {
         }
 
         // Aldi's note card ("Dari Aldi"):
-        // If user is Aldi -> opens editor
-        // If user is Ira -> opens read-only viewer (cannot edit Aldi's note)
-        cardNoteKamu.setOnClickListener(v -> {
+        View.OnClickListener aldiNoteClickListener = v -> {
             if (isUserAldi) {
                 showWriteNoteDialog();
             } else {
-                showReadOnlyNoteDialog("Aldi", tvNoteKamuContent.getText().toString(), tvNoteKamuTime.getText().toString(), R.drawable.img_mood_kamu);
+                showReadOnlyNoteDialog("Aldi", tvNoteKamuContent.getText().toString(), tvNoteKamuTime.getText().toString(), R.drawable.avatar_aldi);
             }
-        });
+        };
+        cardNoteKamu.setOnClickListener(aldiNoteClickListener);
+        if (ivNoteKamuAction != null) {
+            ivNoteKamuAction.setOnClickListener(aldiNoteClickListener);
+        }
 
         // Ira's note card ("Dari Ira"):
-        // If user is Ira -> opens editor
-        // If user is Aldi -> opens read-only viewer (cannot edit Ira's note)
-        cardNotePasangan.setOnClickListener(v -> {
+        View.OnClickListener iraNoteClickListener = v -> {
             if (!isUserAldi) {
                 showWriteNoteDialog();
             } else {
-                showReadOnlyNoteDialog("Ira", tvNotePasanganContent.getText().toString(), tvNotePasanganTime.getText().toString(), R.drawable.img_mood_pasangan);
+                showReadOnlyNoteDialog("Ira", tvNotePasanganContent.getText().toString(), tvNotePasanganTime.getText().toString(), R.drawable.avatar_ira);
             }
-        });
+        };
+        cardNotePasangan.setOnClickListener(iraNoteClickListener);
+        if (ivNotePasanganAction != null) {
+            ivNotePasanganAction.setOnClickListener(iraNoteClickListener);
+        }
 
         // Mood Kita Bento Card & Selectors
         headerMoodCard.setOnClickListener(v -> showMoodCheckInDialog(true, false));
@@ -314,57 +393,75 @@ public class MainActivity extends BaseActivity {
         cardMoodPasangan.setOnClickListener(v -> showMoodCheckInDialog(false, false));
 
         // Wishlist Kita Bento Card & Checkboxes
-        headerWishlistCard.setOnClickListener(v ->
-                showCustomSnackBar("Membuka daftar lengkap Wishlist Kita", R.drawable.ic_wishlist_bag_pink)
-        );
+        headerWishlistCard.setOnClickListener(v -> {
+            Intent intent = new Intent(this, WishlistActivity.class);
+            startActivity(intent);
+        });
 
-        itemWish1.setOnClickListener(v -> toggleWishlistItem(0, cbWish1));
-        itemWish2.setOnClickListener(v -> toggleWishlistItem(1, cbWish2));
-        itemWish3.setOnClickListener(v -> toggleWishlistItem(2, cbWish3));
+        itemWish1.setOnClickListener(v -> toggleWishlistItem(0));
+        itemWish2.setOnClickListener(v -> toggleWishlistItem(1));
+        itemWish3.setOnClickListener(v -> toggleWishlistItem(2));
 
-        // Kenangan Kita Full-Width Card
-        headerMemoriesCard.setOnClickListener(v ->
-                showCustomSnackBar("Membuka galeri lengkap Kenangan Kita", R.drawable.ic_gallery_pink)
-        );
+        if (btnAddWishlist != null) {
+            btnAddWishlist.setOnClickListener(v -> {
+                Intent intent = new Intent(this, WishlistActivity.class);
+                intent.putExtra(WishlistActivity.EXTRA_OPEN_ADD, true);
+                startActivity(intent);
+            });
+        }
 
-        cardMemory1.setOnClickListener(v ->
-                showCustomSnackBar("Kenangan: Menikmati senja berdua di pantai ♡", R.drawable.ic_gallery_pink)
-        );
-
-        cardMemory2.setOnClickListener(v ->
-                showCustomSnackBar("Kenangan: Buket bunga tulip spesial ♡", R.drawable.ic_heart)
-        );
-
-        cardMemory3.setOnClickListener(v ->
-                showCustomSnackBar("Kenangan: Janji hati di bawah senja ♡", R.drawable.ic_heart)
-        );
-
-        if (cardAddMemory != null) {
-            cardAddMemory.setOnClickListener(v ->
-                    showCustomSnackBar("Tambah kenangan foto baru bersama ♡", R.drawable.ic_add)
+        // Kenangan Kita Header & Actions
+        if (headerMemoriesCard != null) {
+            headerMemoriesCard.setOnClickListener(v ->
+                    showCustomSnackBar("Membuka galeri lengkap Kenangan Kita ♡", R.drawable.ic_gallery_pink)
             );
         }
 
-        // Bottom Navigation
-        navHome.setOnClickListener(v -> {
-            // Already on Beranda
-        });
+        if (btnAddMemoryHeader != null) {
+            btnAddMemoryHeader.setOnClickListener(v -> showAddMemoryDialog());
+        }
 
-        navWishlist.setOnClickListener(v ->
-                showCustomSnackBar("Membuka menu Wishlist Kita", R.drawable.ic_heart)
-        );
+        // Bottom Navigation (Qibbly Style Split Floating Bar)
+        selectNavTab(0);
 
-        navMood.setOnClickListener(v ->
-                showMoodCheckInDialog(true, false)
-        );
+        if (navHome != null) {
+            navHome.setOnClickListener(v -> {
+                selectNavTab(0);
+                if (scrollView != null) {
+                    scrollView.smoothScrollTo(0, 0);
+                }
+                showCustomSnackBar("Beranda Ruang Kita ♡", R.drawable.ic_heart);
+            });
+        }
 
-        navMemories.setOnClickListener(v ->
-                showCustomSnackBar("Membuka menu Kenangan Kita", R.drawable.ic_gallery_pink)
-        );
+        if (navWishlist != null) {
+            navWishlist.setOnClickListener(v -> {
+                selectNavTab(1);
+                Intent intent = new Intent(this, WishlistActivity.class);
+                startActivity(intent);
+            });
+        }
 
-        navProfile.setOnClickListener(v ->
-                showCustomSnackBar("Membuka menu Ruang Kita", R.drawable.ic_heart)
-        );
+        if (navMood != null) {
+            navMood.setOnClickListener(v -> {
+                selectNavTab(2);
+                showMoodCheckInDialog(true, false);
+            });
+        }
+
+        if (navMemories != null) {
+            navMemories.setOnClickListener(v -> {
+                selectNavTab(3);
+                showCustomSnackBar("Membuka menu Kenangan Kita", R.drawable.ic_gallery_pink);
+            });
+        }
+
+        if (navProfile != null) {
+            navProfile.setOnClickListener(v -> {
+                selectNavTab(4);
+                showCustomSnackBar("Membuka menu Ruang Kita", R.drawable.ic_heart);
+            });
+        }
     }
 
     /**
@@ -693,11 +790,71 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void toggleWishlistItem(int index, ImageView checkbox) {
-        wishChecked[index] = !wishChecked[index];
-        checkbox.setImageResource(wishChecked[index]
-                ? R.drawable.ic_checkbox_checked
-                : R.drawable.ic_checkbox_unchecked);
+    private void toggleWishlistItem(int index) {
+        List<WishlistItem> items = WishlistManager.getItems(this);
+        if (index < items.size()) {
+            WishlistItem item = items.get(index);
+            boolean newState = !item.isCompleted();
+            item.setCompleted(newState);
+            if (newState) {
+                SimpleDateFormat sdf = new SimpleDateFormat("d MMMM yyyy", new Locale("id", "ID"));
+                item.setCompletedDate(sdf.format(new Date()));
+            } else {
+                item.setCompletedDate(null);
+            }
+            WishlistManager.updateItem(this, item);
+            refreshWishlistPreview();
+            if (newState) {
+                showCustomSnackBar("Impian terwujud: " + item.getTitle() + " ♡ 🎉", R.drawable.ic_heart);
+            }
+        }
+    }
+
+    private void refreshWishlistPreview() {
+        List<WishlistItem> items = WishlistManager.getItems(this);
+        if (items.size() > 0 && tvWish1 != null && cbWish1 != null) {
+            WishlistItem item0 = items.get(0);
+            tvWish1.setText(item0.getTitle());
+            cbWish1.setImageResource(item0.isCompleted() ? R.drawable.ic_checkbox_checked : R.drawable.ic_checkbox_unchecked);
+            if (item0.isCompleted()) {
+                tvWish1.setPaintFlags(tvWish1.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                tvWish1.setTextColor(0xFF9E8C8B);
+            } else {
+                tvWish1.setPaintFlags(tvWish1.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                tvWish1.setTextColor(0xFF2B1D1D);
+            }
+        }
+        if (items.size() > 1 && tvWish2 != null && cbWish2 != null) {
+            WishlistItem item1 = items.get(1);
+            tvWish2.setText(item1.getTitle());
+            cbWish2.setImageResource(item1.isCompleted() ? R.drawable.ic_checkbox_checked : R.drawable.ic_checkbox_unchecked);
+            if (item1.isCompleted()) {
+                tvWish2.setPaintFlags(tvWish2.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                tvWish2.setTextColor(0xFF9E8C8B);
+            } else {
+                tvWish2.setPaintFlags(tvWish2.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                tvWish2.setTextColor(0xFF2B1D1D);
+            }
+        }
+        if (items.size() > 2 && tvWish3 != null && cbWish3 != null) {
+            WishlistItem item2 = items.get(2);
+            tvWish3.setText(item2.getTitle());
+            cbWish3.setImageResource(item2.isCompleted() ? R.drawable.ic_checkbox_checked : R.drawable.ic_checkbox_unchecked);
+            if (item2.isCompleted()) {
+                tvWish3.setPaintFlags(tvWish3.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                tvWish3.setTextColor(0xFF9E8C8B);
+            } else {
+                tvWish3.setPaintFlags(tvWish3.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                tvWish3.setTextColor(0xFF2B1D1D);
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        selectNavTab(0);
+        refreshWishlistPreview();
     }
 
     private void showCustomSnackBar(String message, int iconRes) {
@@ -738,6 +895,362 @@ public class MainActivity extends BaseActivity {
         card.addView(row);
         layout.addView(card, 0);
         snackbar.show();
+    }
+
+    /**
+     * Calculates the exact days together since 11 Juli 2026 dynamically.
+     */
+    private void updateDaysTogether() {
+        try {
+            Calendar startCal = Calendar.getInstance();
+            startCal.set(2026, Calendar.JULY, 11, 0, 0, 0);
+            startCal.set(Calendar.MILLISECOND, 0);
+
+            Calendar todayCal = Calendar.getInstance();
+            todayCal.set(Calendar.HOUR_OF_DAY, 0);
+            todayCal.set(Calendar.MINUTE, 0);
+            todayCal.set(Calendar.SECOND, 0);
+            todayCal.set(Calendar.MILLISECOND, 0);
+
+            long diffMillis = todayCal.getTimeInMillis() - startCal.getTimeInMillis();
+            long daysTogether = (diffMillis / (1000 * 60 * 60 * 24)) + 1; // 11 Juli 2026 is Day 1
+            if (daysTogether < 1) {
+                daysTogether = 1;
+            }
+
+            if (tvDaysCount != null) {
+                tvDaysCount.setText(String.valueOf(daysTogether));
+            }
+            if (tvAnniversaryDate != null) {
+                tvAnniversaryDate.setText("11 Juli 2026");
+            }
+        } catch (Exception e) {
+            if (tvDaysCount != null) {
+                tvDaysCount.setText("103");
+            }
+            if (tvAnniversaryDate != null) {
+                tvAnniversaryDate.setText("11 Juli 2026");
+            }
+        }
+    }
+
+    private void setupMemoriesCarousel() {
+        if (recyclerMemoriesCarousel == null) return;
+
+        CarouselLayoutManager layoutManager = new CarouselLayoutManager(new MultiBrowseCarouselStrategy());
+        recyclerMemoriesCarousel.setLayoutManager(layoutManager);
+
+        carouselSnapHelper = new CarouselSnapHelper();
+        carouselSnapHelper.attachToRecyclerView(recyclerMemoriesCarousel);
+
+        memoryList.clear();
+        memoryList.add(new MemoryItem(1, "Senja Berdua di Pantai", "11 Juli 2026", R.drawable.img_memory_1, false));
+        memoryList.add(new MemoryItem(2, "Buket Bunga Favoritmu", "18 Agustus 2026", R.drawable.img_memory_2, false));
+        memoryList.add(new MemoryItem(3, "Janji Manis di Bawah Senja", "02 September 2026", R.drawable.img_memory_3, false));
+        memoryList.add(new MemoryItem(4, "Momen Hangat Pertama", "28 September 2026", R.drawable.img_hero_couple_sunset, false));
+        memoryList.add(new MemoryItem(5, "Rencana Masa Depan Kita", "14 Oktober 2026", R.drawable.img_bg_dreams_quote, false));
+
+        memoriesAdapter = new MemoriesCarouselAdapter(this, memoryList, (item, adapterPos) -> {
+            if (adapterPos == currentCarouselPosition) {
+                showMemoryPreviewDialog(item);
+            } else {
+                recyclerMemoriesCarousel.smoothScrollToPosition(adapterPos);
+            }
+        });
+
+        int startPos = memoriesAdapter.getInitialStartPosition();
+        currentCarouselPosition = startPos;
+        memoriesAdapter.setActivePosition(startPos);
+
+        recyclerMemoriesCarousel.setAdapter(memoriesAdapter);
+        recyclerMemoriesCarousel.scrollToPosition(startPos);
+
+        recyclerMemoriesCarousel.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                checkCarouselSlideTransition();
+            }
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    finalizeCarouselSlidePosition();
+                }
+            }
+        });
+
+        recyclerMemoriesCarousel.post(this::finalizeCarouselSlidePosition);
+    }
+
+    private void checkCarouselSlideTransition() {
+        if (recyclerMemoriesCarousel == null) return;
+        RecyclerView.LayoutManager lm = recyclerMemoriesCarousel.getLayoutManager();
+        if (lm == null) return;
+
+        int childCount = recyclerMemoriesCarousel.getChildCount();
+        if (childCount == 0) return;
+
+        int startPadding = recyclerMemoriesCarousel.getPaddingStart();
+
+        View closestChild = null;
+        int minDistance = Integer.MAX_VALUE;
+        int closestPos = -1;
+
+        for (int i = 0; i < childCount; i++) {
+            View child = recyclerMemoriesCarousel.getChildAt(i);
+            if (child == null) continue;
+            int dist = Math.abs(child.getLeft() - startPadding);
+            if (dist < minDistance) {
+                minDistance = dist;
+                closestChild = child;
+                closestPos = recyclerMemoriesCarousel.getChildAdapterPosition(child);
+            }
+        }
+
+        if (closestPos != -1 && closestPos != currentCarouselPosition) {
+            int oldPos = currentCarouselPosition;
+            currentCarouselPosition = closestPos;
+
+            if (memoriesAdapter != null) {
+                memoriesAdapter.setActivePosition(closestPos);
+            }
+
+            for (int i = 0; i < childCount; i++) {
+                View child = recyclerMemoriesCarousel.getChildAt(i);
+                if (child == null) continue;
+                int pos = recyclerMemoriesCarousel.getChildAdapterPosition(child);
+                View overlay = child.findViewById(R.id.layout_memory_text_overlay);
+                if (overlay == null) continue;
+
+                if (pos == closestPos) {
+                    // Slide paling kiri yang baru: muncul dengan animasi fade
+                    overlay.animate().cancel();
+                    overlay.setAlpha(0f);
+                    overlay.setVisibility(View.VISIBLE);
+                    overlay.animate()
+                            .alpha(1f)
+                            .setDuration(300)
+                            .start();
+                } else if (pos == oldPos) {
+                    // Slide sebelumnya: animasi fade-out
+                    overlay.animate().cancel();
+                    overlay.animate()
+                            .alpha(0f)
+                            .setDuration(180)
+                            .withEndAction(() -> overlay.setVisibility(View.INVISIBLE))
+                            .start();
+                } else {
+                    // Slide tengah dan kanan: tetap tersembunyi
+                    overlay.animate().cancel();
+                    overlay.setAlpha(0f);
+                    overlay.setVisibility(View.INVISIBLE);
+                }
+            }
+        }
+    }
+
+    private void finalizeCarouselSlidePosition() {
+        if (recyclerMemoriesCarousel == null) return;
+        RecyclerView.LayoutManager lm = recyclerMemoriesCarousel.getLayoutManager();
+        if (lm == null) return;
+
+        View snapView = carouselSnapHelper != null ? carouselSnapHelper.findSnapView(lm) : null;
+        int snapPos = snapView != null ? recyclerMemoriesCarousel.getChildAdapterPosition(snapView) : RecyclerView.NO_POSITION;
+        if (snapPos == RecyclerView.NO_POSITION) {
+            int startPadding = recyclerMemoriesCarousel.getPaddingStart();
+            int minDistance = Integer.MAX_VALUE;
+            int count = recyclerMemoriesCarousel.getChildCount();
+            for (int i = 0; i < count; i++) {
+                View child = recyclerMemoriesCarousel.getChildAt(i);
+                if (child == null) continue;
+                int dist = Math.abs(child.getLeft() - startPadding);
+                if (dist < minDistance) {
+                    minDistance = dist;
+                    snapPos = recyclerMemoriesCarousel.getChildAdapterPosition(child);
+                }
+            }
+        }
+
+        if (snapPos != RecyclerView.NO_POSITION) {
+            currentCarouselPosition = snapPos;
+            if (memoriesAdapter != null) {
+                memoriesAdapter.setActivePosition(snapPos);
+            }
+        }
+
+        int childCount = recyclerMemoriesCarousel.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View child = recyclerMemoriesCarousel.getChildAt(i);
+            if (child == null) continue;
+            int pos = recyclerMemoriesCarousel.getChildAdapterPosition(child);
+            View overlay = child.findViewById(R.id.layout_memory_text_overlay);
+            if (overlay == null) continue;
+
+            if (pos == currentCarouselPosition) {
+                overlay.animate().cancel();
+                if (overlay.getVisibility() != View.VISIBLE || overlay.getAlpha() < 1f) {
+                    overlay.setVisibility(View.VISIBLE);
+                    overlay.animate().alpha(1f).setDuration(220).start();
+                }
+            } else {
+                overlay.animate().cancel();
+                overlay.setAlpha(0f);
+                overlay.setVisibility(View.INVISIBLE);
+            }
+        }
+    }
+
+    private void showMemoryPreviewDialog(MemoryItem item) {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_memory_preview);
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+
+        ImageView ivImage = dialog.findViewById(R.id.iv_preview_image);
+        TextView tvTitle = dialog.findViewById(R.id.tv_preview_title);
+        TextView tvDate = dialog.findViewById(R.id.tv_preview_date);
+        View btnClose = dialog.findViewById(R.id.btn_close_preview);
+        View btnActionDismiss = dialog.findViewById(R.id.btn_action_dismiss);
+
+        if (ivImage != null && item.getImageRes() != 0) {
+            ivImage.setImageResource(item.getImageRes());
+        }
+        if (tvTitle != null) {
+            tvTitle.setText(item.getTitle());
+        }
+        if (tvDate != null) {
+            tvDate.setText(item.getDate());
+        }
+
+        View.OnClickListener dismissListener = v -> dialog.dismiss();
+        if (btnClose != null) btnClose.setOnClickListener(dismissListener);
+        if (btnActionDismiss != null) btnActionDismiss.setOnClickListener(dismissListener);
+
+        dialog.show();
+    }
+
+    private void showAddMemoryDialog() {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_add_memory);
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+
+        EditText etTitle = dialog.findViewById(R.id.et_memory_title);
+        EditText etDate = dialog.findViewById(R.id.et_memory_date);
+        View btnCancel = dialog.findViewById(R.id.btn_cancel_add_memory);
+        View btnSave = dialog.findViewById(R.id.btn_save_memory);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", new Locale("id", "ID"));
+        String defaultDate = sdf.format(new Date());
+        if (etDate != null) {
+            etDate.setText(defaultDate);
+        }
+
+        if (btnCancel != null) {
+            btnCancel.setOnClickListener(v -> dialog.dismiss());
+        }
+
+        if (btnSave != null) {
+            btnSave.setOnClickListener(v -> {
+                String title = etTitle != null ? etTitle.getText().toString().trim() : "";
+                String date = etDate != null ? etDate.getText().toString().trim() : "";
+
+                if (TextUtils.isEmpty(title)) {
+                    if (etTitle != null) etTitle.setError("Beri judul kenangan terlebih dahulu ♡");
+                    return;
+                }
+                if (TextUtils.isEmpty(date)) {
+                    date = defaultDate;
+                }
+
+                // Pick rotating stock photos for new memories
+                int[] photoChoices = new int[]{
+                        R.drawable.img_memory_1,
+                        R.drawable.img_memory_2,
+                        R.drawable.img_memory_3,
+                        R.drawable.img_hero_couple_sunset
+                };
+                int chosenPhoto = photoChoices[(memoryList.size()) % photoChoices.length];
+
+                // Insert right before the last "Tambah Kenangan" card
+                int insertPos = Math.max(0, memoryList.size() - 1);
+                MemoryItem newMemory = new MemoryItem(memoryList.size() + 1, title, date, chosenPhoto, false);
+                memoryList.add(insertPos, newMemory);
+
+                if (memoriesAdapter != null) {
+                    memoriesAdapter.notifyItemInserted(insertPos);
+                }
+
+                if (recyclerMemoriesCarousel != null) {
+                    recyclerMemoriesCarousel.smoothScrollToPosition(insertPos);
+                }
+
+                dialog.dismiss();
+                showCustomSnackBar("Kenangan baru berhasil disimpan ♡", R.drawable.ic_heart);
+            });
+        }
+
+        dialog.show();
+    }
+
+    private void selectNavTab(int index) {
+        currentNavIndex = index;
+
+        int inactiveColor = Color.parseColor("#FF9E8C8B");
+        int activeColor = Color.parseColor("#FFD45863");
+
+        // Update secondary left tabs
+        if (pillNavWishlist != null) pillNavWishlist.setBackgroundResource(index == 1 ? R.drawable.bg_nav_pill_active : 0);
+        if (ivNavWishlist != null) ivNavWishlist.setColorFilter(index == 1 ? activeColor : inactiveColor);
+
+        if (pillNavMood != null) pillNavMood.setBackgroundResource(index == 2 ? R.drawable.bg_nav_pill_active : 0);
+        if (ivNavMood != null) ivNavMood.setColorFilter(index == 2 ? activeColor : inactiveColor);
+
+        if (pillNavMemories != null) pillNavMemories.setBackgroundResource(index == 3 ? R.drawable.bg_nav_pill_active : 0);
+        if (ivNavMemories != null) ivNavMemories.setColorFilter(index == 3 ? activeColor : inactiveColor);
+
+        if (pillNavProfile != null) pillNavProfile.setBackgroundResource(index == 4 ? R.drawable.bg_nav_pill_active : 0);
+        if (ivNavProfile != null) ivNavProfile.setColorFilter(index == 4 ? activeColor : inactiveColor);
+
+        // Update primary right Home button
+        boolean isHome = (index == 0);
+        if (cardNavHome != null) {
+            cardNavHome.setStrokeWidth(0);
+            cardNavHome.setOutlineSpotShadowColor(Color.parseColor(isHome ? "#66D45863" : "#26463032"));
+        }
+        if (navHome != null) {
+            navHome.setBackgroundResource(isHome ? R.drawable.bg_home_btn_gradient : R.drawable.bg_home_btn_inactive);
+        }
+        if (ivNavHome != null) {
+            ivNavHome.setColorFilter(isHome ? Color.WHITE : inactiveColor);
+        }
+    }
+
+    private void showSettingsDialog() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Pengaturan Ruang Kita ♡")
+                .setMessage("Masuk sebagai: " + currentUserName + "\nIngin keluar dari akun?")
+                .setPositiveButton("Keluar (Logout)", (d, which) -> {
+                    SharedPreferences authPrefs = getSharedPreferences("almaira_auth", MODE_PRIVATE);
+                    authPrefs.edit().putBoolean("is_logged_in", false).apply();
+
+                    Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                })
+                .setNegativeButton("Batal", null)
+                .show();
     }
 
     private int dpToPx(float dp) {

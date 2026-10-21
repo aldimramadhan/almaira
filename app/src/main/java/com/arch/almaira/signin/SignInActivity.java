@@ -59,6 +59,13 @@ public class SignInActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences authPrefs = getSharedPreferences(PREF_AUTH, MODE_PRIVATE);
+        if (authPrefs.getBoolean(KEY_IS_LOGGED_IN, false)) {
+            navigateToMain();
+            return;
+        }
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_signin);
 
